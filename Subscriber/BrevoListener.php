@@ -114,7 +114,7 @@ class BrevoListener
         if ($this->isEasyAdmin($event)) return false;
 
         $locale = substr($event->getRequest()->getLocale(),0,2);
-        $javascript = "<!-- Brevo Conversations {literal} -->"
+        $javascript = "<!-- Brevo Conversations {literal} -->".
 			"<script>".
 			"    (function(d, w, c) {".
 			"        w.BrevoConversationsID = '".$this->websiteId."';".
