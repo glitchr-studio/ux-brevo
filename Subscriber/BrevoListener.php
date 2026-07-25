@@ -73,6 +73,11 @@ class BrevoListener
         $controllerAttribute = $event->getRequest()->attributes->get("_controller");
         if($controllerAttribute === null) return false;
         
+        $route = $event->getRequest()->attributes->get("_route");
+        if ($route && ($route === "security_rescue" || str_starts_with($route, "admin"))) {
+            return true;
+        }
+
         $array = is_array($controllerAttribute) ? $controllerAttribute : explode("::", $controllerAttribute);
         $controller = explode("::", $array[0])[0];
 
@@ -81,7 +86,7 @@ class BrevoListener
         while(class_exists($parent) && ( $parent = get_parent_class($parent)))
             $parents[] = $parent;
 
-        $eaParents = array_filter($parents, fn($c) => str_starts_with($c, "EasyCorp\Bundle\EasyAdminBundle"));
+        $eaParents = array_filter($parents, fn($c) => str_starts_with($c, "EasyCorp\Bundle\EasyAdminBundle") || str_starts_with($c, "Base\Admin\Controller"));
         return !empty($eaParents);
     }
 
