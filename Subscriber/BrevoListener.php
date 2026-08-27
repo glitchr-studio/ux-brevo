@@ -56,7 +56,7 @@ class BrevoListener
         if (!$event->isMainRequest())
             return false;
 
-        if ($this->isEasyAdmin($event))
+        if ($this->isAdmin($event))
             return false;
     
         return !$this->isProfiler($event) && $event->getResponse()->getStatusCode() == 200;
@@ -68,7 +68,7 @@ class BrevoListener
         return str_starts_with($route ?? "", "_wdt") || str_starts_with($route ?? "", "_profiler");
     }
 
-    public function isEasyAdmin($event)
+    public function isAdmin($event)
     {
         $controllerAttribute = $event->getRequest()->attributes->get("_controller");
         if($controllerAttribute === null) return false;
@@ -116,7 +116,7 @@ class BrevoListener
         if (!$event->isMainRequest()) return false;
 
         if ($this->isProfiler ($event)) return false;
-        if ($this->isEasyAdmin($event)) return false;
+        if ($this->isAdmin($event)) return false;
 
         $locale = substr($event->getRequest()->getLocale(),0,2);
         $javascript = "<!-- Brevo Conversations {literal} -->".
